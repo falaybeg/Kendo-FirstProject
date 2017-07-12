@@ -1,0 +1,186 @@
+﻿@model Kendo.Musteri
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <br />
+    <div class="col-md-12">
+
+        <div class="row">
+
+            <div class="col-md-5">
+
+                <div class="example">
+                    <div class="k-block k-success-colored">
+                        <h5><b>TC Kimlik:</b> </h5>
+                        <input type="text" class="k-textbox" id="tckimlik" name="TCkimlik" required='' />
+                        <h5><b>Isim:</b> </h5>
+                        <input type="text" class="k-textbox" id="isim" name="Isim" />
+                        <h5><b>Soyisim:</b> </h5>
+                        <input type="text" class="k-textbox" id="soyisim" name="Soyisim" />
+                        <h5><b>Sehir:</b> </h5>
+                        <input type="text" class="k-textbox" id="sehir" name="City" />
+                        <button id="kaydet" class="k-button k-primary" style="float:right"> Kaydet</button>
+                    </div>
+                </div>
+                <script>
+    $(document).ready(function () {
+
+        $("#kaydet").kendoButton({
+            icon: "k-icon k-i-save"
+        });
+
+        $("#kaydet").click(function () {
+
+                var dataObj = {
+                    TCkimlik: $("#tckimlik").val(),
+                    Isim: $("#isim").val(),
+                    Soyisim: $("#soyisim").val(),
+                    City: $("#sehir").val()
+                };
+
+                $.ajax({
+
+                    url: "http://localhost:56369/Home/Ekle",
+                    method: "POST",
+                    data: dataObj,
+                    dataType: "json",
+                    success: function (data) {
+                        alert("Basariyla Kaydedildi");
+
+                        $("#tckimlik").val(''),
+                            $("#isim").val(''),
+                            $("#soyisim").val(''),
+                            $("#sehir").val(''),
+                            $("#grid").data('kendoGrid').dataSource.read();
+
+                    }
+                });
+        });
+    });
+
+                </script>
+            </div>
+
+            <div class="col-md-7" style="float:right;">
+
+
+                <input id="color" />
+                <input id="beden" />
+
+                <button class="k-button k-primary" id="get">Customize</button>
+
+
+                <script>
+                    $(document).ready(function () {
+                        var data = [
+                            { text: "Siyah", value: "1" },
+                            { text: "Kırmızı", value: "2" },
+                            { text: "Yeşil", value: "3" }
+                        ];
+                        var beden = [
+                            { text: "S", value: "1" },
+                            { text: "M", value: "2" },
+                            { text: "L", value: "3" }
+                        ];
+
+                        // create DropDownList from input HTML element
+                        $("#color").kendoDropDownList({
+                            dataTextField: "text",
+                            dataValueField: "value",
+                            dataSource: data,
+
+                            Filtering: true,
+                            index: 0,
+                            change: onChange
+                        });
+                        $("#beden").kendoDropDownList({
+                            dataTextField: "text",
+
+                            dataSource: beden,
+                            serverFiltering: true,
+                            index: 0,
+                            change: onchange
+
+                        });
+
+                        // kendo DropDown selected value
+                        var color = $("#color").data("kendoDropDownList");
+                        color.select(-1);
+                        var beden = $("#beden").data("kendoDropDownList");
+                        beden.select(-1);
+
+                        function onChange() {
+                            var value = $("#color").val();
+                            var value2 = $("#beden").val();
+                        };
+
+                        $("#get").click(function () {
+
+
+                            alert('\Renk: ' + $("#color").data("kendoDropDownList").text() + '\nBeden: ' + $("#beden").data("kendoDropDownList").text());
+                        });
+                    });
+                </script>
+
+            </div>
+
+
+        </div>
+        <br />
+
+        <div class="row">
+            <div id="grid">
+            </div>
+            <script>
+                    $(document).ready(function () {
+
+                        $("#grid").kendoGrid({
+                            toolbar: ["create"],
+                            dataSource: {
+
+                                transport: {
+
+                                    read: {
+                                        url: "http://localhost:56369/Home/Veriler",
+                                        dataType: "json"
+                                    },
+                                    edit:
+                                    {
+                                        url: "http://localhost:56369/Home/Guncelle",
+                                        type: "POST",
+                                        dataType: "json"
+                                    },
+                                    destroy:
+                                    {
+                                        url: "http://localhost:56369/Home/Delete",
+                                        dataType: "json"
+                                    },
+                                },
+                                pageSize: 7,
+                            },
+
+                            pageable: true,
+                            filterable: true,
+                            sortable: true,
+                            editable: "inline",
+                            resizable: true,
+                            columns: [
+                                { field: "Id", title: "ID no", editable: false, filterable: false },
+                                { field: "TCkimlik", title: "Kimlik No" },
+                                { field: "Isim", title: "Isim" },
+                                { field: "Soyisim", title: "Soyisim" },
+                                { field: "City", title: "Sehir" },
+                                { command: ["edit", "destroy"], width: "250px" }
+                            ]
+                        });
+
+                    });
+            </script>
+        </div>
+
+    </div>
+
+</div>
+
