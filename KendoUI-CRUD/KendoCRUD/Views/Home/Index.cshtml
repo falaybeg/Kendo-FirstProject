@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Ana Sayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="example">
+                <div class="k-block k-success-colored">
+                    <h5><b>TC Kimlik:</b> </h5>
+                    <input type="text" class="k-textbox" id="tckimlik" name="TCkimlik" required='' />
+                    <h5><b>Isim:</b> </h5>
+                    <input type="text" class="k-textbox" id="isim" name="Isim" />
+                    <h5><b>Soyisim:</b> </h5>
+                    <input type="text" class="k-textbox" id="soyisim" name="Soyisim" />
+                    <h5><b>Sehir:</b> </h5>
+                    <input type="text" class="k-textbox" id="sehir" name="City" />
+                    <button id="kaydet" class="k-button k-primary" style="float:right"> Kaydet</button>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+
+                    $("#kaydet").kendoButton({
+                        icon: "k-icon k-i-save"
+                    });
+
+                    $("#kaydet").click(function () {
+
+                        var dataObj = {
+                            TCkimlik: $("#tckimlik").val(),
+                            Isim: $("#isim").val(),
+                            Soyisim: $("#soyisim").val(),
+                            City: $("#sehir").val()
+                        };
+
+                        $.ajax({
+
+                            url: "Home/Ekle",
+                            method: "POST",
+                            data: dataObj,
+                            dataType: "json",
+                            success: function (data) {
+                                alert("Basariyla Kaydedildi");
+
+                                $("#tckimlik").val(''),
+                                    $("#isim").val(''),
+                                    $("#soyisim").val(''),
+                                    $("#sehir").val(''),
+                                    $("#grid").data('kendoGrid').dataSource.read();
+
+                            }
+                        });
+                    });
+                });
+
+            </script>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 center-block">
+        <div id="grid"></div>
+        <script>
+            $(document).ready(function () {
+
+
+                $("#grid").kendoGrid({
+
+                    editable: "popup",
+                    sortable: true,
+                    filterable: true,
+                    pageable: {
+                        refresh: true,
+                        pageSizes: true
+
+                    },
+                    toolbar: ["create"],
+                    columns: [
+                        { field: "Id", title: "Personel ID", filterable: false, sortable: false, editable: false },
+                        { field: "TCkimlik", title: "TC Kimlik" },
+                        { field: "Isim", title: "Isim" },
+                        { field: "Soyisim", title: "Soyisim" },
+                        { field: "City", title: "Sehir" },
+                        { command: ["edit", { name: "destroy", text: "Sil" }], title: "Action" },
+
+                    ],
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "Home/ReadCustomer",
+                            },
+                            create: {
+                                url: "Home/CreateCustomer",
+                                type: "POST"
+                            },
+                            update: {
+                                url: "Home/UpdateCustomer",
+                                type: "POST"
+                            },
+                            destroy: {
+                                url: "Home/DeleteCustomer",
+                                type: "POST",
+                            },
+
+                            parameterMap: function (data, operation) {
+
+                                if (operation != "read" && data.models) {
+                                    return data.models[0];
+                                }
+
+
+                            },
+
+
+                          
+
+                        },
+                        pageSize: 10,
+
+                        batch: true,
+                        schema: {
+                            model: {
+                                id: "Id",
+                                fields: {
+                                    Id: { editable: false },
+                                    TCkimlik: { type: "string" },
+                                    Isim: { type: "string" },
+                                    Soyisim: { type: "string" },
+                                    City: { type: "string" }
+                                }
+                            }
+                        }
+
+                    }
+                });
+
+            });
+
+
+        </script>
+        </div>
+    </div>
+
+    
+
+</div>
+
+
+  
+
+
+
+
+
+
+
+
+

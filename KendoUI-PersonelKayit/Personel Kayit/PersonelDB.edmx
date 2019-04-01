@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PersonelModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ilceler">
+          <Key>
+            <PropertyRef Name="ilceID" />
+          </Key>
+          <Property Name="ilceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ilceAdi" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="FKilID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Iller">
+          <Key>
+            <PropertyRef Name="ilID" />
+          </Key>
+          <Property Name="ilID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ilAdi" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Personel">
+          <Key>
+            <PropertyRef Name="personelID" />
+          </Key>
+          <Property Name="personelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TCkimlik" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="Isim" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Soyisim" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Cinsiyet" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="KayitTarih" Type="datetime" Nullable="false" />
+          <Property Name="FKilceID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Ilceler__FKilID__398D8EEE">
+          <End Role="Iller" Type="Self.Iller" Multiplicity="1" />
+          <End Role="Ilceler" Type="Self.Ilceler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Iller">
+              <PropertyRef Name="ilID" />
+            </Principal>
+            <Dependent Role="Ilceler">
+              <PropertyRef Name="FKilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Personel__FKilce__38996AB5">
+          <End Role="Ilceler" Type="Self.Ilceler" Multiplicity="1" />
+          <End Role="Personel" Type="Self.Personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilceler">
+              <PropertyRef Name="ilceID" />
+            </Principal>
+            <Dependent Role="Personel">
+              <PropertyRef Name="FKilceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonelModelStoreContainer">
+          <EntitySet Name="Ilceler" EntityType="Self.Ilceler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Iller" EntityType="Self.Iller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personel" EntityType="Self.Personel" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Ilceler__FKilID__398D8EEE" Association="Self.FK__Ilceler__FKilID__398D8EEE">
+            <End Role="Iller" EntitySet="Iller" />
+            <End Role="Ilceler" EntitySet="Ilceler" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Personel__FKilce__38996AB5" Association="Self.FK__Personel__FKilce__38996AB5">
+            <End Role="Ilceler" EntitySet="Ilceler" />
+            <End Role="Personel" EntitySet="Personel" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PersonelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ilceler">
+          <Key>
+            <PropertyRef Name="ilceID" />
+          </Key>
+          <Property Name="ilceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ilceAdi" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ilID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Iller" Relationship="Self.FK__Ilceler__FKilID__398D8EEE" FromRole="Ilceler" ToRole="Iller" />
+          <NavigationProperty Name="Personel" Relationship="Self.FK__Personel__FKilce__38996AB5" FromRole="Ilceler" ToRole="Personel" />
+        </EntityType>
+        <EntityType Name="Iller">
+          <Key>
+            <PropertyRef Name="ilID" />
+          </Key>
+          <Property Name="ilID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ilAdi" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Ilceler" Relationship="Self.FK__Ilceler__FKilID__398D8EEE" FromRole="Iller" ToRole="Ilceler" />
+        </EntityType>
+        <EntityType Name="Personel">
+          <Key>
+            <PropertyRef Name="personelID" />
+          </Key>
+          <Property Name="personelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TCkimlik" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Isim" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Soyisim" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cinsiyet" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="KayitTarih" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FKilceID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ilceler" Relationship="Self.FK__Personel__FKilce__38996AB5" FromRole="Personel" ToRole="Ilceler" />
+        </EntityType>
+        <Association Name="FK__Ilceler__FKilID__398D8EEE">
+          <End Role="Iller" Type="Self.Iller" Multiplicity="1" />
+          <End Role="Ilceler" Type="Self.Ilceler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Iller">
+              <PropertyRef Name="ilID" />
+            </Principal>
+            <Dependent Role="Ilceler">
+              <PropertyRef Name="ilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Personel__FKilce__38996AB5">
+          <End Role="Ilceler" Type="Self.Ilceler" Multiplicity="1" />
+          <End Role="Personel" Type="Self.Personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ilceler">
+              <PropertyRef Name="ilceID" />
+            </Principal>
+            <Dependent Role="Personel">
+              <PropertyRef Name="FKilceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ilceler" EntityType="Self.Ilceler" />
+          <EntitySet Name="Iller" EntityType="Self.Iller" />
+          <EntitySet Name="Personel" EntityType="Self.Personel" />
+          <AssociationSet Name="FK__Ilceler__FKilID__398D8EEE" Association="Self.FK__Ilceler__FKilID__398D8EEE">
+            <End Role="Iller" EntitySet="Iller" />
+            <End Role="Ilceler" EntitySet="Ilceler" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Personel__FKilce__38996AB5" Association="Self.FK__Personel__FKilce__38996AB5">
+            <End Role="Ilceler" EntitySet="Ilceler" />
+            <End Role="Personel" EntitySet="Personel" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PersonelModelStoreContainer" CdmEntityContainer="PersonelEntities">
+          <EntitySetMapping Name="Ilceler">
+            <EntityTypeMapping TypeName="PersonelModel.Ilceler">
+              <MappingFragment StoreEntitySet="Ilceler">
+                <ScalarProperty Name="ilceID" ColumnName="ilceID" />
+                <ScalarProperty Name="ilceAdi" ColumnName="ilceAdi" />
+                <ScalarProperty Name="ilID" ColumnName="FKilID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Iller">
+            <EntityTypeMapping TypeName="PersonelModel.Iller">
+              <MappingFragment StoreEntitySet="Iller">
+                <ScalarProperty Name="ilID" ColumnName="ilID" />
+                <ScalarProperty Name="ilAdi" ColumnName="ilAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personel">
+            <EntityTypeMapping TypeName="PersonelModel.Personel">
+              <MappingFragment StoreEntitySet="Personel">
+                <ScalarProperty Name="personelID" ColumnName="personelID" />
+                <ScalarProperty Name="TCkimlik" ColumnName="TCkimlik" />
+                <ScalarProperty Name="Isim" ColumnName="Isim" />
+                <ScalarProperty Name="Soyisim" ColumnName="Soyisim" />
+                <ScalarProperty Name="Cinsiyet" ColumnName="Cinsiyet" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="KayitTarih" ColumnName="KayitTarih" />
+                <ScalarProperty Name="FKilceID" ColumnName="FKilceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
